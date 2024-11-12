@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/contas")
@@ -34,5 +35,19 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> checkLogin(@RequestBody Map<String, String> credentials) {
+        String username = credentials.get("username");
+        String password = credentials.get("password");
+
+        boolean isAuthenticated = accountService.authenticate(username, password);
+        if (isAuthenticated) {
+            return new ResponseEntity<>("Login bem-sucedido", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Usuário ou senha incorretos", HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 
 }

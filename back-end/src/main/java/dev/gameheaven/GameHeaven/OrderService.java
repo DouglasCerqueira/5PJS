@@ -7,13 +7,15 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Order createOrder(ObjectId accountId, ObjectId gameId, String orderPrice, int status) {
+    public Order createOrder(ObjectId accountId, List<String> gameId, String orderPrice, int status) {
         Order order = new Order();
         order.setAccountID(accountId);
         order.setGameID(gameId);
@@ -23,5 +25,9 @@ public class OrderService {
         order.setStatus(status);
 
         return orderRepository.insert(order);
+    }
+
+    public List<Order> getAllOrdersById(ObjectId accountID) {
+        return orderRepository.findByAccountID(accountID);
     }
 }

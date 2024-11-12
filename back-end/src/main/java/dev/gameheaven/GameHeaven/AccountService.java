@@ -23,6 +23,16 @@ public class AccountService {
         return account;
     }
 
+    public boolean authenticate(String username, String password) {
+        Optional<Account> accountOptional = accountRepository.findAccountByUsername(username);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
+            return account.getPassword().equals(password);
+        }
+        return false;
+    }
+
+
     public Account updateIdGames(String id, List<String> newIdGames) {
         Optional<Account> optionalAccount = accountRepository.findById(new ObjectId(id));
         if (optionalAccount.isPresent()) {
